@@ -1,0 +1,28 @@
+[
+  {
+    "index": 1,
+    "ref_id": "#/pictures/0",
+    "page": 1,
+    "bbox": {
+      "left": 134.7080078125,
+      "top": 487.6969909667969,
+      "right": 475.6730041503906,
+      "bottom": 282.3714294433594
+    },
+    "caption": "Figure 1: This is an example image.",
+    "has_image": true
+  },
+  {
+    "index": 2,
+    "ref_id": "#/pictures/1",
+    "page": 2,
+    "bbox": {
+      "left": 218.88412475585938,
+      "top": 514.0226135253906,
+      "right": 392.1822814941406,
+      "bottom": 283.25836181640625
+    },
+    "caption": "Figure 2: This is an example image.",
+    "has_image": true
+  }
+]
