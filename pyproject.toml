@@ -6,8 +6,18 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "docling>=2.55.1",
-    "google-generativeai>=0.8.5",
+    "docling-core>=2.48.4",
+    "fastapi>=0.118.0",
     "huggingface-hub[hf-xet]>=0.35.3",
+    "langchain>=0.3.27",
+    "langchain-openai>=0.3.35",
+    "pandas>=2.3.3",
     "pathlib>=1.0.1",
     "pillow>=11.3.0",
+    "pydantic>=2.11.10",
+    "pydantic-settings>=2.11.0",
+    "python-dotenv>=1.1.1",
+    "python-multipart>=0.0.20",
+    "uvicorn[standard]>=0.37.0",
+    "google-generativeai>=0.8.5",
 ]
