@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docling Parser - Document Processing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>Docling Document Parser</h1>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Upload & Jobs</a>
+                <a href="#" id="apiInfoLink">API Info</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- API Status -->
+        <div id="apiStatus" class="alert alert-info hidden">
+            <span>Connecting to API...</span>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">Upload Document</h2>
+                    <p class="card-subtitle">Upload and parse PDF, DOCX, HTML, Markdown, or Image files</p>
+                </div>
+            </div>
+
+            <form id="uploadForm">
+                <!-- File Upload -->
+                <div class="form-group">
+                    <label for="fileInput">Select Document</label>
+                    <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.html,.md,.png,.jpg,.jpeg,.tiff" required>
+                    <p class="card-subtitle mt-1">Supported: PDF, DOCX, HTML, Markdown, Images (PNG, JPG, TIFF)</p>
+                </div>
+
+                <!-- Parsing Mode -->
+                <div class="form-group">
+                    <label for="parsingMode">Parsing Mode</label>
+                    <select id="parsingMode">
+                        <option value="standard">Standard - Balanced quality and speed</option>
+                        <option value="fast">Fast - Quick processing</option>
+                        <option value="high_quality">High Quality - Best accuracy</option>
+                        <option value="ocr">OCR - For scanned documents and images</option>
+                    </select>
+                </div>
+
+                <!-- Extraction Options -->
+                <div class="form-group">
+                    <h3 class="card-subtitle mb-2">Extraction Options</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="extractImages" checked>
+                        <label for="extractImages">Extract Images</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="extractTables" checked>
+                        <label for="extractTables">Extract Tables</label>
+                    </div>
+                </div>
+
+                <!-- Image Options -->
+                <div class="form-group">
+                    <label for="imageScale">Image Quality Scale (1.0 - 4.0)</label>
+                    <input type="number" id="imageScale" min="1.0" max="4.0" step="0.1" value="2.0">
+                </div>
+
+                <!-- Image Description Options -->
+                <div class="form-group">
+                    <h3 class="card-subtitle mb-2">AI Image Descriptions</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="describeImages">
+                        <label for="describeImages">Generate AI descriptions for images</label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="descriptionOptionsGroup" style="display: none;">
+                    <label for="descriptionProvider">Description Provider</label>
+                    <select id="descriptionProvider">
+                        <option value="none">None</option>
+                        <option value="docling">Docling (SmolVLM)</option>
+                        <option value="gemini">Google Gemini</option>
+                        <option value="openai">OpenAI GPT-4 Vision</option>
+                    </select>
+
+                    <label for="descriptionPrompt" class="mt-2">Custom Description Prompt (Optional)</label>
+                    <textarea id="descriptionPrompt" rows="3" placeholder="Enter custom prompt for image descriptions..."></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary" id="uploadBtn">
+                    <span>Upload & Parse Document</span>
+                </button>
+            </form>
+
+            <!-- Upload Progress -->
+            <div id="uploadProgress" class="hidden mt-3">
+                <div class="alert alert-info">
+                    <span id="uploadStatus">Uploading document...</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs Section -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">Processing Jobs</h2>
+                    <p class="card-subtitle">View and manage document parsing jobs</p>
+                </div>
+                <div class="flex gap-2">
+                    <select id="statusFilter" class="btn-small">
+                        <option value="">All Jobs</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                    <button class="btn btn-secondary btn-small" id="refreshJobsBtn">
+                        <span>Refresh</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jobs List -->
+            <div id="jobsList" class="job-list">
+                <div class="text-center text-muted">
+                    <p>No jobs found. Upload a document to get started.</p>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="jobsLoading" class="hidden">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <!-- API Info Modal Content (Hidden by default) -->
+        <div id="apiInfoCard" class="card hidden">
+            <div class="card-header">
+                <h2 class="card-title">API Information</h2>
+                <button class="btn btn-secondary btn-small" id="closeApiInfo">Close</button>
+            </div>
+            <div id="apiInfoContent">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Status Modal -->
+    <div id="jobStatusModal" class="modal hidden" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(13, 2, 33, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    ">
+        <div class="card" style="max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <div class="card-header">
+                <h2 class="card-title">Job Status</h2>
+                <button class="btn btn-secondary btn-small" id="closeModal">Close</button>
+            </div>
+            <div id="jobStatusContent">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

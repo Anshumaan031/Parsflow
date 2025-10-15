@@ -11,4 +11,5 @@ wheels/
 .env
 context
 
-GPU_SETUP_GUIDE.md
+docs/GPU_SETUP_GUIDE.md
+node_modules

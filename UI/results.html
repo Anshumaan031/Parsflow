@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docling Parser - Results</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>Docling Document Parser</h1>
+            <nav class="nav-links">
+                <a href="index.html">Upload & Jobs</a>
+                <a href="results.html" class="active">Results</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Job Info -->
+        <div class="card">
+            <div class="card-header flex-between">
+                <div>
+                    <h2 class="card-title">Document Results</h2>
+                    <p class="card-subtitle" id="jobIdDisplay">Job ID: Loading...</p>
+                </div>
+                <div class="flex gap-2">
+                    <a href="index.html" class="btn btn-secondary btn-small">Back to Jobs</a>
+                </div>
+            </div>
+
+            <!-- Document Metadata -->
+            <div id="metadataSection">
+                <h3 class="card-subtitle mb-2">Document Information</h3>
+                <div class="table-container">
+                    <table>
+                        <tbody id="metadataTable">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div id="statisticsSection" class="mt-3">
+                <h3 class="card-subtitle mb-2">Content Statistics</h3>
+                <div class="flex gap-2" style="flex-wrap: wrap;">
+                    <div class="card" style="flex: 1; min-width: 200px;">
+                        <div class="text-center">
+                            <div class="card-title" id="textCount">0</div>
+                            <div class="card-subtitle">Text Items</div>
+                        </div>
+                    </div>
+                    <div class="card" style="flex: 1; min-width: 200px;">
+                        <div class="text-center">
+                            <div class="card-title" id="tableCount">0</div>
+                            <div class="card-subtitle">Tables</div>
+                        </div>
+                    </div>
+                    <div class="card" style="flex: 1; min-width: 200px;">
+                        <div class="text-center">
+                            <div class="card-title" id="imageCount">0</div>
+                            <div class="card-subtitle">Images</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Buttons -->
+            <div class="export-buttons mt-3">
+                <button class="btn btn-primary btn-small" id="exportMarkdown">Export Markdown</button>
+                <button class="btn btn-primary btn-small" id="exportJSON">Export JSON</button>
+            </div>
+        </div>
+
+        <!-- Content Tabs -->
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" data-tab="markdown">Markdown</button>
+                <button class="tab" data-tab="texts">Text Items</button>
+                <button class="tab" data-tab="tables">Tables</button>
+                <button class="tab" data-tab="images">Images</button>
+            </div>
+
+            <!-- Markdown Tab -->
+            <div class="tab-content active" id="markdown">
+                <div class="form-group">
+                    <label>Full Document (Markdown)</label>
+                    <textarea id="markdownContent" rows="20" readonly style="font-family: monospace; white-space: pre-wrap;"></textarea>
+                </div>
+            </div>
+
+            <!-- Texts Tab -->
+            <div class="tab-content" id="texts">
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="pageFilter">Filter by Page</label>
+                        <select id="pageFilter">
+                            <option value="">All Pages</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="labelFilter">Filter by Label</label>
+                        <select id="labelFilter">
+                            <option value="">All Labels</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-secondary btn-small" id="applyTextFilters">Apply Filters</button>
+                    </div>
+                </div>
+
+                <!-- Text Items List -->
+                <div id="textItemsList">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Tables Tab -->
+            <div class="tab-content" id="tables">
+                <div class="form-group">
+                    <label for="tableFormat">Table Format</label>
+                    <select id="tableFormat">
+                        <option value="dict">Dictionary (Structured)</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+
+                <div id="tablesContainer">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Images Tab -->
+            <div class="tab-content" id="images">
+                <div id="imagesContainer" class="image-grid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="card text-center">
+            <div class="spinner"></div>
+            <p class="mt-2">Loading results...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="card hidden">
+            <div class="alert alert-error">
+                <span id="errorText"></span>
+            </div>
+            <a href="index.html" class="btn btn-secondary mt-2">Back to Jobs</a>
+        </div>
+    </div>
+
+    <script src="results.js"></script>
+</body>
+</html>
